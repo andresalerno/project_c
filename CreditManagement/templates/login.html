@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="../static/css/form.css" type="text/css">
+	</head>
+
+
+	<body style="background: rgb(49,107,85)">
+	{% block body %}
+	{% if session['logged_in'] %}
+	<p>You're logged in already!</p>
+	{% else %}
+
+	<div style="display: flex;flex-direction:row;justify-content:center;">
+		<img style="margin: 0 auto;" src="../static/AS_PARTNERS.jpg" height="100px;" />
+	</div>
+	<form action="/" method="POST">
+		<div class="login">
+			<div class="login-screen">
+				<div class="app-title">
+					<h1>Login</h1>
+				</div>
+
+				<div class="login-form">
+					<div class="control-group">
+					<input type="text" class="login-field" value="" placeholder="email" name="email">
+					<label class="login-field-icon fui-user" for="login-name"></label>
+					</div>
+
+					<div class="control-group">
+					<input type="password" class="login-field" value="" placeholder="password" name="password">
+					<label class="login-field-icon fui-lock" for="login-pass"></label>
+					</div>
+
+	                <input style="background: #212121;" type="submit" value="Log in" class="btn btn-primary btn-large btn-block" >
+				    <br>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	{% endif %}
+	{% endblock %}
+</body>
+</html>

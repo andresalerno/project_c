@@ -1,0 +1,151 @@
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var requestDataJson = {
+      idClient: 0,
+      idSalesman: 0,
+      dateApproveDesapprove: new Date().toLocaleDateString(),
+      isApprove: 1,
+      idWhoApprove: 1,
+      idReasons: 1,
+      products: []
+    }
+
+
+
+
+    $(".inputAmount").click(function() {
+      var element = $(this).closest('tr');
+      let id = $(element).find('.productId').text();
+      var unitValue = $(element).find('.unitValue').text();
+
+      //$(this).focusout(function() {
+        //var content = $(this).val();
+
+        //console.log(content);
+      //});
+
+      $(".inputAmount").on("input", function(e) {
+        var element = $(this).closest('tr');
+        let id = $(element).find('.productId').text();
+        var unitValue = $(element).find('.unitValue').text();
+        var discount = $(element).find('.discount').text();
+
+        var input = $(element.find('.inputAmount'));
+        var val = input.val();
+
+        if (input.data("lastval") != val) {
+          input.data("lastval", val);
+
+          // Inserir na table
+          total = unitValue * val;
+          $(element).find('.totalValue').text(total);
+          $(element).find('.liquidValue').text(total * (1 - (discount / 100)))
+        }
+      });
+    });
+    $("#submit").click(function() {
+
+      var productsCampaign = {{productsCampaign|tojson}}
+
+      requestDataJson.idClient = productsCampaign.idClient;
+      requestDataJson.idSalesman = productsCampaign.idSalesman;
+
+      $("table tr").each(function(e) {
+        var mAmount = $(this).find('.inputAmount').val();
+        var mTotalLiquidValue = $(this).find('.liquidValue').html();
+        var mTime = $(this).find('.inputTime').val()
+        var mProductId = $(this).find('.productId').html();
+
+        if(e != 0) {
+          requestDataJson.products.push({
+            idProduct: mProductId,
+            amount: mAmount,
+            liquidValue: mTotalLiquidValue,
+            time: mTime
+          })
+        }
+      });
+
+      postAjax("/finish", JSON.stringify(requestDataJson), function(data) {
+        console.log("boa");
+      });
+    });
+
+    function postAjax(url, data, success) {
+      var params = typeof data == 'string' ? data : Object.keys(data).map(
+              function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
+          ).join('&');
+
+      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+      xhr.open('POST', url);
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState>3 && xhr.status==200) { success(xhr.responseText); }
+      };
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.send(params);
+      return xhr;
+    }
+
+  });
+</script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Fazer pedido</h1>
+</div>
+
+<div class="container">
+  <div class="row">
+
+    <nav class="breadcrumb">
+      <span class="breadcrumb-item">Selecionar cliente</span>
+      <span class="breadcrumb-item">Selecionar produto</span>
+      <span class="breadcrumb-item">Detalhes do pedido</span>
+      <span class="breadcrumb-item active">Finalizar e gerar boleto</span>
+    </nav>
+  </div>
+</div>
+
+<div class="container">
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nome do produto</th>
+        <th scope="col">Valor unitário</th>
+        <th scope="col">Quantidade</th>
+        <th scope="col">Valor total (R$)</th>
+        <th scope="col">Desconto (%)</th>
+        <th scope="col">Valor liquido (R$)</th>
+        <th scope="col">Prazo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in productsCampaign['products'] %}
+      <tr>
+        <th class="productId" scope="row">{{ i['productId'] }}</th>
+        {% for k in allProducts %}
+          {% if k[0] == i['productId']|int %}
+            <td class="productName">{{k[1]}}</td>
+            <td class="unitValue">{{k[2]}}</td>
+          {% endif %}
+        {% endfor %}
+        <td>
+          <input class="inputAmount" type="text" />
+        </td>
+        <td class="totalValue">0</td>
+        <td class="discount">{{ i['discount'] }}</td>
+        <td class="liquidValue">0</td>
+        <td class="time">
+          <input class="inputTime" type="text" />
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a style="color:#ffffff;" href="" id="submit" type="submit" class="btn btn-primary">Submit</a>
+</div>

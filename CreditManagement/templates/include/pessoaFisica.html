@@ -1,0 +1,60 @@
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+
+<script>
+
+$(document).ready(function() {
+  $("#btnNameSearch").click(function() {
+    var companyName = $("#companyNameSearch").val().toLowerCase();
+
+    console.log(companyName);
+
+    $("#btnNameSearch").prop('href', '/pessoaFisicaName/'+companyName);
+  });
+
+  $("#btnCpfSearch").click(function() {
+    var cpf = $("#companyCpfSearch").val().toLowerCase();
+
+    console.log(cpf);
+
+    $("#btnCpfSearch").prop('href', '/pessoaFisicaCpf/'+cpf);
+  });
+});
+
+
+</script>
+
+<div class="row">
+  <div class="col"> <!-- Busca por nome -->
+    <div class="form-group">
+      <label for="companyNameSearch">Buscar pelo nome da empresa</label>
+      <input id="companyNameSearch" type="text" class="form-control" placeholder="Exemplo: Google, Facebook">
+    </div>
+    <a id="btnNameSearch" type="button" class="btn btn-success">Procurar</a>
+  </div>
+
+  <div class="col"> <!-- Busca por cnpj -->
+    <div class="form-group">
+      <label for="companyCpfSearch">Buscar pelo cnpj da empresa</label>
+      <input id="companyCpfSearch" type="text" class="form-control" placeholder="Exemplo: 000.000.000-00">
+    </div>
+    <a id="btnCpfSearch" type="button" class="btn btn-success">Procurar</a>
+  </div>
+</div>
+<hr>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">CNPJ</th>
+      <th scope="col">Nome</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for k in companies %}
+      <tr>
+        <td>{{ k[0] }}</td>
+        <td>{{ k[1] }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

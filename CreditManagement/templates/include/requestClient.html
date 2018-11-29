@@ -1,0 +1,80 @@
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#btn-confirm').bind('click', false);
+
+    $(".table-clients").click(function(){
+      $("#btn-confirm").unbind("click", false);
+
+      id = $(this).find('.id').text();
+      name = $(this).find('.name').text();
+      telephone = $(this).find('.telephone').text();
+      economicgroup = $(this).find('.economic-group').text();
+      email = $(this).find('.email').text();
+
+      $("#name").text("Nome: "+name);
+
+      $("#btn-confirm").prop('href', '/product/'+id);
+
+      console.log(id);
+    });
+  });
+</script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Fazer pedido</h1>
+</div>
+
+<div class="container">
+  <div class="row">
+
+    <nav class="breadcrumb">
+      <span class="breadcrumb-item">Selecionar cliente</span>
+      <span class="breadcrumb-item active">Selecionar produto</span>
+      <span class="breadcrumb-item active">Detalhes do pedido</span>
+      <span class="breadcrumb-item active">Finalizar e gerar boleto</span>
+    </nav>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <!-- Table of client list -->
+    <div class="col-sm-8">
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th>Grupo economico</th>
+              <th>E-mail</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in listClients %}
+            <tr class="table-clients">
+              <td class="id">{{ row[0] }}</td>
+              <td class="name">{{ row[1] }}</td>
+              <td class="telephone">{{ row[4] }}</td>
+              <td class="economic-group">{{ row[6] }}</td>
+              <td class="email">{{ row[7] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <p id="name" class="card-text"></p>
+          <a id="btn-confirm" href="" class="btn btn-primary">Confirmar cliente?</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

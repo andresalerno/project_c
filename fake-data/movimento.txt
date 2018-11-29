@@ -1,0 +1,7 @@
+movimento = [{
+    "cod_transacao": "100059620000104100920181428",
+    "ped_id": 1,
+    "clijxf_id": 2,
+    "usu_id": 1,
+    "rpz_id": 0
+}]

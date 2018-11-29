@@ -1,0 +1,52 @@
+pedidos = [{
+    "status": 1,
+    "valor_total": 220.00,
+    "prazo": 30,
+    "descricao_classificacao": "Aprovado com sucesso",
+    "class_usuario": 1
+    "usuario": 1,
+    "cliente": 1,
+    "produtos": [{
+        "quantidade": 1,
+        "produtoid": 1
+    },
+    {
+        "quantidade": 1,
+        "produtoid": 1
+    }]
+},
+{
+    "status": 1,
+    "valor_total": 420.00,
+    "prazo": 30,
+    "descricao_classificacao": "Aprovado com sucesso",
+    "class_usuario": 1
+    "usuario": 1,
+    "cliente": 4,
+    "produtos": [{
+        "quantidade": 2,
+        "produtoid": 1
+    },
+    {
+        "quantidade": 1,
+        "produtoid": 3
+    }]
+},
+{
+    "status": 1,
+    "valor_total": 1335.00,
+    "prazo": 30,
+    "descricao_classificacao": "Aprovado com sucesso",
+    "class_usuario": 1
+    "usuario": 1,
+    "cliente": 7,
+    "produtos": [{
+        "quantidade": 3,
+        "produtoid": 8
+    },
+    {
+        "quantidade": 1,
+        "produtoid": 13
+    }]
+}]
+
